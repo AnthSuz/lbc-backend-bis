@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const formidableMiddleware = require("express-formidable");
 
 mongoose.connect("mongodb://localhost/lbc-backend-bis", {
   useNewUrlParser: true,
@@ -8,10 +9,13 @@ mongoose.connect("mongodb://localhost/lbc-backend-bis", {
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("API is waiting for requests");
-});
+app.use(formidableMiddleware());
 
-app.listen(8000, () => {
+require("./models/model_user");
+
+const signup = require("./roads/road_signup");
+app.use(signup);
+
+app.listen(4000, () => {
   console.log("Server is listening");
 });
